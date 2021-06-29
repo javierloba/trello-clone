@@ -26,10 +26,37 @@ function App() {
   }
 
   const addCard = (title, listId) => {
+    const newCardId = uuid(); // Crear un id unico
+    const newCard = {
+      id: newCardId,
+      title
+    } // Crear la card nueva
+    const list = data.lists[listId]
+    list.cards = [...list.cards, newCard] // Añadirla al array de cards
+    setData({
+      ...data,
+      lists: {
+        ...data.lists,
+        [listId]: list
+      }
+    })
 
   }
 
-  const addList = (title) => {}
+  const addList = (title) => {
+    const newListId = uuid();
+    setData({
+      listIds: [...data.listIds, newListId],
+      lists: {
+        ...data.lists,
+        [newListId]: {
+          id: newListId,
+          title,
+          cards: []
+        }
+      }
+    })
+  }
 
   return (
     <ContextAPI.Provider value={{updateListTitle, addCard, addList}}>
@@ -41,7 +68,6 @@ function App() {
               return <TrelloList list={list} key={listID}/>
             })
           }
-
           <div>
             <AddCardorList type="list" />
           </div>
