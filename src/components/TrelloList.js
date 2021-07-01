@@ -10,25 +10,27 @@ const TrelloList = ({list, index}) => {
     return (
         <Draggable draggableId={list.id} index={index}>
             {
-                (provided)=>(
-                    <div ref={provided.innerRef} 
-                    {...provided.draggableProps}>
-                        <Paper className={classes.root}>
+                (draggableProvided)=>(
+                    <div 
+                    ref={draggableProvided.innerRef} 
+                    {...draggableProvided.draggableProps}
+                    >
+                        <Paper className={classes.root} {...draggableProvided.dragHandleProps}>
                             <CssBaseline />
                             <ListTitle title={list.title} listId={list.id}/>
                             <Droppable droppableId={list.id}>
                                 {
-                                    (provided)=>(
+                                    (droppableProvided)=>(
                                         <div 
-                                        ref={provided.innerRef}
-                                        {...provided.droppableProps}
+                                        ref={droppableProvided.innerRef} 
+                                        {...droppableProvided.droppableProps}
                                         >
                                             {
                                                 list.cards.map((card, index) => (
                                                     <TrelloCard card={card} key={card.id} index={index}/>
                                                 ))
                                             }
-                                            {provided.placeholder}
+                                            {droppableProvided.placeholder}
                                         </div>
                                     )
                                 }

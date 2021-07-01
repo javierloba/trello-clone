@@ -58,18 +58,65 @@ function App() {
     })
   }
 
-  const onDragEnd = () => {}
+  const onDragEnd = result => {
+    const {
+      destination, destination : {droppableId : destdroppableId, index : destIndex }, 
+      source, source: {droppableId : sourcedroppableId, index : sourceIndex}, 
+      draggableId, 
+      type
+    } = result
+
+    console.table([
+      {
+        sourcedroppableId,
+        destdroppableId,
+        draggableId
+      }
+    ])
+    console.table([
+      {
+        type,
+        sourceIndex,
+        destIndex
+      }
+    ])
+
+    if (!destination) {
+      return;
+    }
+
+    if (type === "list") {
+      const newListIds = data.listIds
+      newListIds.splice(sourceIndex, 1)
+      newListIds.splice(destIndex, 0, draggableId)
+      return;
+    }
+
+    const sourceList = data.lists[sourcedroppableId]
+    const destinationList = data.list[destdroppableId]
+    const draggingCard = sourceList.cards.filter((card)=>card.id === draggableId)[0]
+
+    if(sourcedroppableId === destdroppableId) {
+      sourceList.cards.splice(sourceIndex, 1);
+      destinationList.cards.splice(destIndex, 0, draggingCard)
+    }
+
+
+  }
 
   return (
     <ContextAPI.Provider value={{updateListTitle, addCard, addList}}>
       <div className={classes.root}>
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="12345" type="list" direction="horizontal">
+          <Droppable 
+          droppableId="12345" type="list" direction="horizontal"
+          >
             {
-              (provided) => (
-                <div className={classes.container} 
-                ref={provided.innerRef}
-                {...provided.droppableProps}
+              (droppableProvided) => (
+                <div 
+                {...droppableProvided.droppableProps}
+                ref={droppableProvided.innerRef}
+                className={classes.container} 
                 >
                   {
                     data.listIds.map(listID => {
@@ -79,8 +126,8 @@ function App() {
                   }
                   <div>
                     <AddCardorList type="list" />
-                    {provided.placeholder}
                   </div>
+                  {droppableProvided.placeholder}
                 </div>
               )
             }

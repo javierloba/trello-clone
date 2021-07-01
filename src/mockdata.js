@@ -1,7 +1,7 @@
 const mockData = {
     lists: {
         "01list": {
-            id: "01list",
+            id: "1",
             title: "To Do",
             cards: [{
                 id: "01card",
@@ -15,7 +15,7 @@ const mockData = {
             }]
         },
         "02list": {
-            id: "02list",
+            id: "2",
             title: "In progress",
             cards: []
         }

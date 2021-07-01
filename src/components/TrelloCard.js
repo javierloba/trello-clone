@@ -6,12 +6,15 @@ import { Draggable } from 'react-beautiful-dnd';
 const TrelloCard = ({card, index}) => {
     const classes = useStyle();
     return (
-        <Draggable draggableId={card.id} index={index}>
+        <Draggable 
+        draggableId={card.id} 
+        index={index}
+        >
             {
-                (provided)=>(
-                    <div ref={provided.innerRef} 
-                    {...provided.dragHandleProps}
-                    {...provided.draggableProps}
+                (draggableProvided)=>(
+                    <div ref={draggableProvided.innerRef} 
+                    {...draggableProvided.dragHandleProps}
+                    {...draggableProvided.draggableProps}
                     >
                         <Paper className={classes.trellocard}>
                             {card.title}
