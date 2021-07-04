@@ -122,9 +122,7 @@ function App() {
                       return <TrelloList list={list} index={index} key={listId}/>
                     })
                   }
-                  <div>
                     <AddCardorList type="list" />
-                  </div>
                   {droppableProvided.placeholder}
                 </div>
               )

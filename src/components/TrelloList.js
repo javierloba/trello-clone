@@ -24,6 +24,7 @@ const TrelloList = ({list, index}) => {
                                         <div 
                                         ref={droppableProvided.innerRef} 
                                         {...droppableProvided.droppableProps}
+                                        className={classes.cardContainer}
                                         >
                                             {
                                                 list.cards.map((card, index) => (
@@ -49,6 +50,9 @@ const useStyle = makeStyles(theme => ({
         width: "300px",
         background: "#ebecf0",
         margin: theme.spacing(1)
+    },
+    cardContainer: {
+        marginTop: theme.spacing(4),
     }
 }))
 
