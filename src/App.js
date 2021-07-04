@@ -45,67 +45,65 @@ function App() {
 
   const addList = (title) => {
     const newListId = uuid();
+    const newList = {
+      id: newListId,
+      title,
+      cards: []
+    };
     setData({
       listIds: [...data.listIds, newListId],
       lists: {
         ...data.lists,
-        [newListId]: {
-          id: newListId,
-          title,
-          cards: []
-        }
+        [newListId]: newList,
       }
     })
   }
 
   const onDragEnd = result => {
-    const {
-      destination, destination : {droppableId : destdroppableId, index : destIndex }, 
-      source, source: {droppableId : sourcedroppableId, index : sourceIndex}, 
-      draggableId, 
-      type
-    } = result
-
-    console.table([
-      {
-        sourcedroppableId,
-        destdroppableId,
-        draggableId
-      }
-    ])
-    console.table([
-      {
-        type,
-        sourceIndex,
-        destIndex
-      }
-    ])
+    const { destination, source, draggableId, type } = result
 
     if (!destination) {
       return;
     }
 
     if (type === "list") {
-      const newListIds = data.listIds
-      newListIds.splice(sourceIndex, 1)
-      newListIds.splice(destIndex, 0, draggableId)
+      const newListIds = data.listIds;
+      newListIds.splice(source.index, 1)
+      newListIds.splice(destination.index, 0, draggableId)
       return;
     }
 
-    const sourceList = data.lists[sourcedroppableId]
-    const destinationList = data.list[destdroppableId]
-    const draggingCard = sourceList.cards.filter((card)=>card.id === draggableId)[0]
+    const sourceList = data.lists[source.droppableId];
+    const destinationList = data.lists[destination.droppableId];
+    const draggingCard = sourceList.cards.filter(card =>card.id === draggableId)[0];
 
-    if(sourcedroppableId === destdroppableId) {
-      sourceList.cards.splice(sourceIndex, 1);
-      destinationList.cards.splice(destIndex, 0, draggingCard)
+    if(source.droppableId === destination.droppableId) {
+      sourceList.cards.splice(source.index, 1);
+      destinationList.cards.splice(destination.index, 0, draggingCard)
+      setData({
+        ...data,
+        lists: {
+          ...data.lists,
+          [sourceList.id]: destinationList,
+        }
+      })
+    } else {
+      sourceList.cards.splice(source.index, 1);
+      destinationList.cards.splice(destination.index, 0, draggingCard)
+      setData({
+        ...data,
+        lists: {
+          ...data.lists,
+          [sourceList.id]: sourceList,
+          [destinationList.id]: destinationList
+        }
+      })
     }
-
 
   }
 
   return (
-    <ContextAPI.Provider value={{updateListTitle, addCard, addList}}>
+    <ContextAPI.Provider value={{ updateListTitle, addCard, addList }}>
       <div className={classes.root}>
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable 
@@ -119,9 +117,9 @@ function App() {
                 className={classes.container} 
                 >
                   {
-                    data.listIds.map(listID => {
-                      const list = data.lists[listID]
-                      return <TrelloList list={list} key={listID}/>
+                    data.listIds.map((listId, index) => {
+                      const list = data.lists[listId]
+                      return <TrelloList list={list} index={index} key={listId}/>
                     })
                   }
                   <div>

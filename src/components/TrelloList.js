@@ -8,7 +8,7 @@ import { Draggable, Droppable } from 'react-beautiful-dnd';
 const TrelloList = ({list, index}) => {
     const classes = useStyle();
     return (
-        <Draggable draggableId={list.id} index={index}>
+        <Draggable draggableId={list.id} index={index} >
             {
                 (draggableProvided)=>(
                     <div 

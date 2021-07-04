@@ -1,26 +1,26 @@
 const mockData = {
     lists: {
-        "01list": {
-            id: "1",
+        "list-1": {
+            id: "list-1",
             title: "To Do",
             cards: [{
-                id: "01card",
+                id: "card-1",
                 title: "Comprar carne"
             },{
-                id: "02card",
+                id: "card-2",
                 title: "Comprar pescado"
             },{
-                id: "03card",
+                id: "card-3",
                 title: "Comprar pan"
             }]
         },
-        "02list": {
-            id: "2",
+        "list-2": {
+            id: "list-2",
             title: "In progress",
             cards: []
         }
     },
-    listIds: ["01list", "02list"]
+    listIds: ["list-1", "list-2"]
 }
 
 export default mockData;
